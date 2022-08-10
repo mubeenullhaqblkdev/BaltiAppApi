@@ -1,0 +1,6 @@
+{
+    "jwtPrivateKey": "asdf123098",
+    "dbUri": "mongodb+srv://awais:awais@cluster0.tpfm3.mongodb.net/BaltiApp?retryWrites=true&w=majority",
+    "email": "",
+    "password": ""
+}
