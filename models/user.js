@@ -8,19 +8,20 @@ var userSchema = mongoose.Schema({
   number: String,
   password: String,
   location: String,
+  locationDesc: String,
   email: String,
-  Uid: String,
-  
- 
-  Address: String,
   role: {
     type: String,
     default: "user",
   },
+  isBlocked: {
+    type: Boolean,
+    default: false
+  },
 });
 userSchema.methods.generateAuthToken = function () {
 
-  const token = jwt.sign({ _id: this.id, name: this.name, role: this.role, email: this.email }, config.get('jwtPrivateKey'))
+  const token = jwt.sign({ _id: this.id, name: this.name, role: this.role, email: this.email }, config.get('jwtPrivateKey'), {expiresIn: '30d'})
   //console.log(process.env.baltiApp_jwtPrivateKey);
   return token
 }
@@ -31,7 +32,24 @@ function validate(user) {
       number: joi.string(),
       password: joi.string().min(5).max(255).required(),
       location: joi.string(),
-      email: joi.string().min(5).max(255).required().email(),
+      email: joi.string().min(5).max(255).required().email().required(),
+      address: joi.string(),
+      locationDesc: joi.string(),
+      isBlocked: joi.boolean(),
+      //picture
+  }
+  return joi.validate(user, schema);
+}
+
+function validateUpdate(user) {
+  const schema = {
+      name: joi.string().min(2).max(50),
+      number: joi.string(),
+      password: joi.string().min(5).max(255),
+      location: joi.string(),
+      locationDesc: joi.string(),
+      email: joi.string().min(5).max(255).email(),
+      isBlocked: joi.boolean(),
       //picture
   }
   return joi.validate(user, schema);
@@ -41,3 +59,4 @@ var User = mongoose.model("User", userSchema);
 
 module.exports.User = User;
 module.exports.validate = validate;
+module.exports.validateUpdate = validateUpdate;
