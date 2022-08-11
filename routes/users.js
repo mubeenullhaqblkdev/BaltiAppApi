@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
 });
 
 //Create User
-router.post("/update", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
