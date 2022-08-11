@@ -13,8 +13,10 @@ var productSchema = mongoose.Schema({
     type: Number,
     default: null
 
-  }
-  //image:
+  },
+  description: String,
+  images: [String],
+  videos: [String]
 });
 
 var Product = mongoose.model("Product", productSchema);
@@ -25,7 +27,8 @@ function validate(user) {
     name: joi.string().required(),
     price: joi.number().required(),
     rating: joi.number(),
-    //picture
+    images: joi.array().items(joi.string()),
+    videos: joi.array().items(joi.string()),
   }
   return joi.validate(user, schema);
 }
