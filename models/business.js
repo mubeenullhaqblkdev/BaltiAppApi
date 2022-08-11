@@ -13,8 +13,9 @@ var BusinessSchema = mongoose.Schema({
   name: String,
   type: String, 
   location: String, 
+  locationDesc: String,
   description: String,
-  //image
+  image: String, 
   overallRating:  {
     type: Number,
     default: 0
@@ -30,6 +31,7 @@ function validate(user) {
       name: joi.string().min(2).max(50).required(),
       type: joi.string(),
       location: joi.string().min(5).max(255),
+      locationDesc: joi.string(),
       description: joi.string(),
       email: joi.string().min(5).max(255).required().email(),
       //picture
@@ -38,3 +40,4 @@ function validate(user) {
 }
 
 module.exports.Businesses = Business;
+module.exports.validate = validate;
