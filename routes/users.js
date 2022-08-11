@@ -1,8 +1,10 @@
 var express = require("express");
-const { User, validate } = require("../models/user");
+const { User, validate, validateUpdate } = require("../models/user");
+const auth = require("../middleware/auth")
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
 var router = express.Router();
+
 
 //User Login
 router.post("/login", async (req, res) => {
@@ -42,7 +44,7 @@ router.post("/login", async (req, res) => {
 });
 
 //Create User
-router.post("/", async (req, res, next) => {
+router.post("/update", async (req, res, next) => {
   try {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -51,7 +53,7 @@ router.post("/", async (req, res, next) => {
     let user = await User.findOne({ email: lowerEmail });
     if (user) return res.status(400).send("User alredy registered");
     
-    user = new User(_.pick(req.body, ["name", "email", "number", "password", "location"]));
+    user = new User(_.pick(req.body, ["name", "email", "number", "password", "location", "locationDesc"]));
     user.set({ email: lowerEmail })
 
     const salt = await bcrypt.genSalt(10);
@@ -64,17 +66,37 @@ router.post("/", async (req, res, next) => {
   }
 });
 //Update User by ID
-router.put("/:id", async (req, res, next) => {
+router.put("/",[auth], async (req, res, next) => {
   try {
-    let users = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-    });
-    // if (!users) {
-    //   return res.status(400).send({ message: "No user found" });
-    // }
+    const { error } = validateUpdate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    let users = await User.findOneAndUpdate({ _id: req.user._id },
+       _.pick(req.body, ["name", "email", "number", "location", "locationDesc"]),
+        { new: true,}
+        );
+    if (!users) {
+      return res.status(400).send({ message: "No user found to Update" });
+    }
     // users[req.body.name] = req.body.value;
     // await users.save();
     return res.status(200).send(users);
+  } catch (e) {
+    return res.send(e);
+  }
+});
+
+//Change blocked status of a User by ID
+router.put("/blockUser/:id", async (req, res, next) => {
+  try {
+    let user = await User.findOne({ _id: req.params.id });
+    if (!user) {
+      return res.status(400).send({ message: "No user found to Update" });
+    }
+    user.isBlocked = !user.isBlocked;
+    await user.save();
+    // users[req.body.name] = req.body.value;
+    // await users.save();
+    return res.status(200).send(user);
   } catch (e) {
     return res.send(e);
   }
