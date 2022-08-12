@@ -38,12 +38,12 @@ router.get("/:id", async (req, res) => {
 //Update a product By ID
 router.put("/:id", async (req, res) => {
   try {
-    let product = await Product.findOneAndUpdate(req.params.id, req.body, {
+    let product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
     return res.status(200).send(product);
   } catch (e) {
-    res.status(500).send({ errorMessage: "Internal Serverssfsf Error" });
+    res.status(500).send({ errorMessage: "Internal Server Error" });
   }
 });
 
