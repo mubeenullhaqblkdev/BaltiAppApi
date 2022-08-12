@@ -26,6 +26,7 @@ function validate(user) {
     business_id: joi.string().min(2).max(50).required(),
     name: joi.string().required(),
     price: joi.number().required(),
+    description: joi.string(),
     rating: joi.number(),
     images: joi.array().items(joi.string()),
     videos: joi.array().items(joi.string()),
