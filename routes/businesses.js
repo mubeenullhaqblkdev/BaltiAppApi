@@ -17,6 +17,17 @@ router.get("/", async (req, res) => {
   return res.send(businesses);
 });
 
+//Get All businesses of a User
+router.get("/list/:id", async (req, res) => {
+  try{
+    let businesses = await Businesses.find({user: req.params.id});
+    if(businesses.length == 0) return res.status(404).send("Not Found!");
+    return res.status(200).send(businesses);
+  }catch(e) {
+    return res.status(500).send(e);
+  }
+});
+
 //Get a business by ID
 router.get("/:id", async (req, res) => {
   try {
