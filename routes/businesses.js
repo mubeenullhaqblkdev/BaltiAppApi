@@ -1,5 +1,6 @@
 const express = require("express");
 const { Businesses } = require("../models/business");
+const { Product } = require("../models/product");
 const _ = require("lodash");
 let router = express.Router();
 
@@ -39,6 +40,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//Get All products of a business
+router.get('/listProducts/:id', async(req, res) => {
+  const products = await Product.find({business_id: req.params.id});  
+  if(products.length == 0) return res.status(404).send("Not Found!");
+  return res.status(200).send(products);
+})
 //Update a business by ID
 router.put("/:id", async (req, res) => {
   try{
