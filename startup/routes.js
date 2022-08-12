@@ -5,6 +5,7 @@ const users = require("../routes/users");
 const products = require("../routes/product");
 const businesses = require("../routes/businesses");
 const feedbacks = require("../routes/feedbacks");
+const orders = require("../routes/orders");
 
 module.exports = function (app) {
   app.use(xmlparser());
@@ -17,6 +18,7 @@ module.exports = function (app) {
   app.use("/api/businesses", businesses);
   app.use("/api/products", products);
   app.use("/api/feedbacks", feedbacks);
+  app.use("/api/orders", orders);
 
   //app.use('/api/dealCustomers', dealCustomers)
 
