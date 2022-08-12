@@ -3,6 +3,17 @@ const { Order } = require("../models/orders");
 
 let router = express.Router();
 
+//Get All Order
+router.get("/", async (req, res) => {
+  try {
+    const orders = await Order.find();
+    if (!orders) return res.status(404).send("Not Found!");
+    return res.status(200).send(orders);
+  } catch (e) {
+    return res.status(500).send(e);
+  }
+});
+
 //get products
 router.get("/:id/:check?", async (req, res) => {
   try {
@@ -24,18 +35,6 @@ router.get("/:id/:check?", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
-  try {
-    let findorder = await Order.find();
-    if (findorder.length < 1) {
-      return res.status(402).send("error");
-    }
-    return res.send(findorder);
-  } catch (e) {
-    return res.status(400).send("error");
-  }
-});
-
 router.put("/:id", async (req, res) => {
   let orders = await Order.findOneAndUpdate(
     {
@@ -45,13 +44,6 @@ router.put("/:id", async (req, res) => {
   );
 
   return res.send(orders);
-});
-router.delete("/:id", async (req, res) => {
-  let ordersdelete = await Order.findOneAndDelete({
-    "UserId._id": req.params.id,
-  });
-
-  return res.send({ message: "succesfully deleted" });
 });
 //postproducts
 router.post("/:id", async (req, res) => {
