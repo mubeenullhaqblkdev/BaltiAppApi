@@ -45,6 +45,13 @@ router.put("/:id", async (req, res) => {
 
   return res.send(orders);
 });
+//Delete Order by ID
+router.delete("/:id", async (req, res) => {
+  let ordersdelete = await Order.findByIdAndRemove(req.params.id);
+  if (!ordersdelete)
+    return res.status(404).send("The user with given id was not found...");
+  res.send(ordersdelete);
+});
 //postproducts
 router.post("/:id", async (req, res) => {
   let findorder = await Order.findById(req.params.id);
