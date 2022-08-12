@@ -22,48 +22,47 @@ router.post("/", async (req, res) => {
   let lowerEmail = req.body.email.toLowerCase();
   let user = await User.findOne({ email: lowerEmail });
   if (!user) return res.status(400).send("Invalid email or password");
-    // const createdAt = new mongoose.Types.ObjectId(user._id).getTimestamp()
-    // console.log(createdAt)
-    // return
-    const isValidPassword = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
+  // const createdAt = new mongoose.Types.ObjectId(user._id).getTimestamp()
+  // console.log(createdAt)
+  // return
+  const isValidPassword = await bcrypt.compare(
+    req.body.password,
+    user.password
+  );
 
-    if (!isValidPassword)
-      return res.status(400).send("Invalid email or password");
+  if (!isValidPassword)
+    return res.status(400).send("Invalid email or password");
 
-    const token = user.generateAuthToken();
+  const token = user.generateAuthToken();
 
-    const userObj = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      refferal_code: user.refferal_code,
-      isMember: user.isMember,
-    };
+  const userObj = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    refferal_code: user.refferal_code,
+    isMember: user.isMember,
+  };
 
-    const reponse = {
-      token,
-      user: userObj,
-    };
-    return res.send(reponse);
+  const reponse = {
+    token,
+    user: userObj,
+  };
+  return res.send(reponse);
 
-    // const userObj = {
-    //   id: user.id,
-    //   name: user.name,
-    //   email: user.email,
-    //   role: user.role,
-    //   isMember: user.isMember,
-    // };
+  // const userObj = {
+  //   id: user.id,
+  //   name: user.name,
+  //   email: user.email,
+  //   role: user.role,
+  //   isMember: user.isMember,
+  // };
 
-    // const reponse = {
-    //   token,
-    //   user: userObj,
-    // };
-    // return res.send(reponse);
-  
+  // const reponse = {
+  //   token,
+  //   user: userObj,
+  // };
+  // return res.send(reponse);
 });
 
 router.post("/generateOtp", async (req, res) => {
@@ -263,41 +262,41 @@ router.post("/isMember", [auth], async (req, res) => {
       } else {
         return res.status(500).end();
       }
-    })
-    // .then(async function (charge) {
-    //   user = await User.findById(req.user._id);
-    //   user.set({
-    //     isMember: true,
-    //     charge_id: charge.id,
-    //   });
-    //   user = await user.save();
-    //   const token = user.generateAuthToken();
+    });
+  // .then(async function (charge) {
+  //   user = await User.findById(req.user._id);
+  //   user.set({
+  //     isMember: true,
+  //     charge_id: charge.id,
+  //   });
+  //   user = await user.save();
+  //   const token = user.generateAuthToken();
 
-    //   const userObj = {
-    //     id: user.id,
-    //     name: user.name,
-    //     email: user.email,
-    //     role: user.role,
-    //     refferal_code: user.refferal_code,
-    //     isMember: user.isMember,
-    //   };
+  //   const userObj = {
+  //     id: user.id,
+  //     name: user.name,
+  //     email: user.email,
+  //     role: user.role,
+  //     refferal_code: user.refferal_code,
+  //     isMember: user.isMember,
+  //   };
 
-    //   const response = {
-    //     token,
-    //     user: userObj,
-    //   };
-    //   await membershipEmail(user.email, user.name);
-    //   console.log("Charge Successful");
-    //   await mailWhitelist(user.email);
-    //   return res.send(response);
-    // })
-    // .catch(function (error) {
-    //   if (error.raw.code == "token_already_used") {
-    //     return res.status("304").end();
-    //   } else {
-    //     return res.status(500).end();
-    //   }
-    // });
+  //   const response = {
+  //     token,
+  //     user: userObj,
+  //   };
+  //   await membershipEmail(user.email, user.name);
+  //   console.log("Charge Successful");
+  //   await mailWhitelist(user.email);
+  //   return res.send(response);
+  // })
+  // .catch(function (error) {
+  //   if (error.raw.code == "token_already_used") {
+  //     return res.status("304").end();
+  //   } else {
+  //     return res.status(500).end();
+  //   }
+  // });
 });
 
 //Membership Subscription through Crypto Currency

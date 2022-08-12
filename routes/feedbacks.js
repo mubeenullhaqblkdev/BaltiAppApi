@@ -4,13 +4,13 @@ let router = express.Router();
 
 //Create Feedback
 router.post("/", async (req, res, next) => {
- try{
-   let feed = new feedback(req.body);
+  try {
+    let feed = new feedback(req.body);
     await feed.save();
     return res.send(feed);
- }catch(e){
-  return res.status(500).send(e);
- } 
+  } catch (e) {
+    return res.status(500).send(e);
+  }
 });
 
 //Get All FeedBacks
@@ -60,6 +60,5 @@ router.delete("/:id", async (req, res) => {
 
   return res.status(200).send(feedbacks);
 });
-
 
 module.exports = router;

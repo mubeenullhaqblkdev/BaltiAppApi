@@ -1,6 +1,6 @@
-const joi = require('joi');
-const config = require('config')
-const jwt = require('jsonwebtoken')
+const joi = require("joi");
+const config = require("config");
+const jwt = require("jsonwebtoken");
 var mongoose = require("mongoose");
 
 var userSchema = mongoose.Schema({
@@ -16,42 +16,45 @@ var userSchema = mongoose.Schema({
   },
   isBlocked: {
     type: Boolean,
-    default: false
+    default: false,
   },
 });
 userSchema.methods.generateAuthToken = function () {
-
-  const token = jwt.sign({ _id: this.id, name: this.name, role: this.role, email: this.email }, config.get('jwtPrivateKey'), {expiresIn: '30d'})
+  const token = jwt.sign(
+    { _id: this.id, name: this.name, role: this.role, email: this.email },
+    config.get("jwtPrivateKey"),
+    { expiresIn: "30d" }
+  );
   //console.log(process.env.baltiApp_jwtPrivateKey);
-  return token
-}
+  return token;
+};
 
 function validate(user) {
   const schema = {
-      name: joi.string().min(2).max(50).required(),
-      number: joi.string(),
-      password: joi.string().min(5).max(255).required(),
-      location: joi.string(),
-      email: joi.string().min(5).max(255).required().email().required(),
-      address: joi.string(),
-      locationDesc: joi.string(),
-      isBlocked: joi.boolean(),
-      //picture
-  }
+    name: joi.string().min(2).max(50).required(),
+    number: joi.string(),
+    password: joi.string().min(5).max(255).required(),
+    location: joi.string(),
+    email: joi.string().min(5).max(255).required().email().required(),
+    address: joi.string(),
+    locationDesc: joi.string(),
+    isBlocked: joi.boolean(),
+    //picture
+  };
   return joi.validate(user, schema);
 }
 
 function validateUpdate(user) {
   const schema = {
-      name: joi.string().min(2).max(50),
-      number: joi.string(),
-      password: joi.string().min(5).max(255),
-      location: joi.string(),
-      locationDesc: joi.string(),
-      email: joi.string().min(5).max(255).email(),
-      isBlocked: joi.boolean(),
-      //picture
-  }
+    name: joi.string().min(2).max(50),
+    number: joi.string(),
+    password: joi.string().min(5).max(255),
+    location: joi.string(),
+    locationDesc: joi.string(),
+    email: joi.string().min(5).max(255).email(),
+    isBlocked: joi.boolean(),
+    //picture
+  };
   return joi.validate(user, schema);
 }
 

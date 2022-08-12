@@ -20,11 +20,11 @@ router.get("/", async (req, res) => {
 
 //Get All businesses of a User
 router.get("/list/:id", async (req, res) => {
-  try{
-    let businesses = await Businesses.find({user: req.params.id});
-    if(businesses.length == 0) return res.status(404).send("Not Found!");
+  try {
+    let businesses = await Businesses.find({ user: req.params.id });
+    if (businesses.length == 0) return res.status(404).send("Not Found!");
     return res.status(200).send(businesses);
-  }catch(e) {
+  } catch (e) {
     return res.status(500).send(e);
   }
 });
@@ -41,31 +41,32 @@ router.get("/:id", async (req, res) => {
 });
 
 //Get All products of a business
-router.get('/listProducts/:id', async(req, res) => {
-  const products = await Product.find({business_id: req.params.id});  
-  if(products.length == 0) return res.status(404).send("Not Found!");
+router.get("/listProducts/:id", async (req, res) => {
+  const products = await Product.find({ business_id: req.params.id });
+  if (products.length == 0) return res.status(404).send("Not Found!");
   return res.status(200).send(products);
-})
+});
 //Update a business by ID
 router.put("/:id", async (req, res) => {
-  try{
-    let Business = await Businesses.findOneAndUpdate(req.params.id, req.body, {new: true});
+  try {
+    let Business = await Businesses.findOneAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     return res.status(200).send(Business);
-  }catch(e) {
+  } catch (e) {
     return res.send({ errormessage: "no record found" });
   }
-
 });
 
 //Delete a business by ID
 router.delete("/:id", async (req, res) => {
-try{
-  let Business = await Businesses.findByIdAndDelete(req.params.id);
+  try {
+    let Business = await Businesses.findByIdAndDelete(req.params.id);
 
-  return res.status(200).send(Business);
-}catch(e) {
-  return res.send({ errormessage: "no record found" });
-}
+    return res.status(200).send(Business);
+  } catch (e) {
+    return res.send({ errormessage: "no record found" });
+  }
 });
 
 module.exports = router;

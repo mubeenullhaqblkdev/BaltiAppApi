@@ -29,7 +29,7 @@ let port = process.env.PORT || 4000;
 app.listen(port, () => {
   // require("log-timestamp");
   winston.log("info", `Started listening on PORT=${port}`);
-   console.log(`Listening on ${port}`);
+  console.log(`Listening on ${port}`);
 });
 
 process.on("uncaughtException", (err) => {
