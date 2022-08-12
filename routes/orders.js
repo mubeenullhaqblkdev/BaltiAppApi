@@ -1,7 +1,43 @@
 const express = require("express");
 const { Order } = require("../models/orders");
+const { Product } = require("../models/product");
+const { Businesses } = require("../models/business");
 
 let router = express.Router();
+
+//Create Order
+router.post("/", async (req, res) => {
+  try {
+    const products = req.body.products;
+    var orderTotal = 0;
+    var totalShipment = 0;
+    for (let i = 0; i < products.length; i++) {
+      //
+      let product = await Product.findById(products[i].product_id);
+      orderTotal += product.price * products[i].qty;
+      products[i].price = product.price;
+      //
+      let business = await Businesses.findById(product.business_id);
+      totalShipment += business.delivery_charges;
+      products[i].business_name = business.name;
+    }
+    let order = new Order({
+      products: products,
+      time_of_order: Date.now(),
+      payable_amount: orderTotal + totalShipment,
+      // delievery_time: String,
+      //delievery_location: String,
+    });
+    order = await order.save();
+    return res.status(200).send({
+      message: "Order created Successfully",
+      Order: order,
+    });
+    console.log("a");
+  } catch (e) {
+    return res.status(500).send(e);
+  }
+});
 
 //Get All Order
 router.get("/", async (req, res) => {
