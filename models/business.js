@@ -12,8 +12,10 @@ var BusinessSchema = mongoose.Schema({
   },
   name: String,
   type: String,
-  location: String,
+  latitude: Number,
+  longitude: Number,
   locationDesc: String,
+  ntn: String,
   description: String,
   image: String,
   overallRating: {
@@ -21,21 +23,27 @@ var BusinessSchema = mongoose.Schema({
     default: 0,
   },
   delivery_charges: Number,
+  phone_number: String,
 });
 
 var Business = mongoose.model("Business", BusinessSchema);
 
-function validate(user) {
+function validate(business) {
   const schema = {
+    user: joi.string().required(),
     name: joi.string().min(2).max(50).required(),
     type: joi.string(),
-    location: joi.string().min(5).max(255),
+    latitude: joi.number(),
+    longitude: joi.number(),
     locationDesc: joi.string(),
+    ntn: joi.string(),
     description: joi.string(),
-    email: joi.string().min(5).max(255).required().email(),
-    //picture
+    image: joi.string(),
+    // email: joi.string().min(5).max(255).required().email(),
+    overallRating: joi.number(),
+    phone_number: joi.string(),
   };
-  return joi.validate(user, schema);
+  return joi.validate(business, schema);
 }
 
 module.exports.Businesses = Business;
