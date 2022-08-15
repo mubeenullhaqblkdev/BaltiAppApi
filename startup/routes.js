@@ -6,6 +6,7 @@ const products = require("../routes/product");
 const businesses = require("../routes/businesses");
 const feedbacks = require("../routes/feedbacks");
 const orders = require("../routes/orders");
+const fav = require("../routes/favourites");
 
 module.exports = function (app) {
   app.use(xmlparser());
@@ -19,6 +20,7 @@ module.exports = function (app) {
   app.use("/api/products", products);
   app.use("/api/feedbacks", feedbacks);
   app.use("/api/orders", orders);
+  app.use("/api/fav", fav);
 
   //app.use('/api/dealCustomers', dealCustomers)
 
