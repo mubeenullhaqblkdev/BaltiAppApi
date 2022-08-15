@@ -22,7 +22,7 @@ var Product = mongoose.model("Product", productSchema);
 
 function validate(user) {
   const schema = {
-    business_id: joi.string().min(2).max(50).required(),
+    business_id: joi.string().required(),
     name: joi.string().required(),
     price: joi.number().required(),
     description: joi.string(),
